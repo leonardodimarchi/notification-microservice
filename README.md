@@ -1,7 +1,8 @@
 # Notification Microservice
 
 ## Patterns
-- Usecases
-- Repositories
-- Mappers
-- DTOs
+- Usecase
+- Repository
+- Mapper
+- DTO
+- Factory
