@@ -32,7 +32,7 @@ export class SendNotification {
             content: new Content(content),
         });
 
-        await this.repository.save(notification);
+        await this.repository.create(notification);
 
         return {
             notification,
