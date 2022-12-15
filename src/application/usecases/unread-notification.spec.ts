@@ -3,14 +3,16 @@ import { Notification } from "@application/entities/notification";
 import { makeNotification } from "@test/factories/notification-factory";
 import { InMemoryNotificationRepository } from "@test/repositories/in-memory-notification-repository";
 import { NotificationNotFound } from "./errors/notification-not-found.error";
-import { ReadNotification } from "./read-notification";
+import { UnreadNotification } from "./unread-notification";
 
-describe('Read notification', () => {
-    it('should be able to read a notification', async () => {
+describe('Unread notification', () => {
+    it('should be able to unread a notification', async () => {
         const repository = new InMemoryNotificationRepository();
-        const usecase = new ReadNotification(repository);
+        const usecase = new UnreadNotification(repository);
 
-        const notification = makeNotification();
+        const notification = makeNotification({
+            readAt: new Date(),
+        });
 
         await repository.create(notification);
 
@@ -18,12 +20,12 @@ describe('Read notification', () => {
             notificationId: notification.id,
         });
 
-        expect(repository.notifications[0].readAt).toEqual(expect.any(Date));
+        expect(repository.notifications[0].readAt).toBeNull();
     });
 
-    it('should not be able to read when it doest not exist', async () => {
+    it('should not be able to unread when it doest not exist', async () => {
         const repository = new InMemoryNotificationRepository();
-        const usecase = new ReadNotification(repository);
+        const usecase = new UnreadNotification(repository);
 
         const call = async () => await usecase.execute({
             notificationId: 'fake id',
